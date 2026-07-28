@@ -12,7 +12,7 @@ public:
                 freq[i] -= 2;
             }
         }
-        char mid = '\0';
+        char mid = '0';
         for (int i = 0; i < 256; i++) {
             if (freq[i]) {
                 mid = char(i);
@@ -21,7 +21,7 @@ public:
         }
         string right = left;
         reverse(right.begin(), right.end());
-        if (mid != '\0') return left + mid + right;
+        if (mid != '0') return left + mid + right;
         else return left + right;
     }
 };
