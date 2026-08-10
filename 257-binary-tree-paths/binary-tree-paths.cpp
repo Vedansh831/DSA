@@ -11,19 +11,28 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root,vector<string>& ans,string s){
-        if(root==NULL) return ;
-        if(root->right==NULL && root->left==NULL){
-            s += to_string(root->val);
+    void helper(TreeNode* root, vector<string>& ans, string& s) {
+        if (root == NULL) return;
+        // Add current node
+        int len = s.size();
+        s += to_string(root->val);
+        // If leaf node
+        if (root->left == NULL && root->right == NULL) {
             ans.push_back(s);
-            return;
         }
-        helper(root->left,ans,s+to_string(root->val)+"->");
-        helper(root->right,ans,s+to_string(root->val)+"->");
+        else {
+            // Add arrow before going to children
+            s += "->";
+            helper(root->left, ans, s);
+            helper(root->right, ans, s);
+        }
+        // BACKTRACK
+        s.resize(len);
     }
     vector<string> binaryTreePaths(TreeNode* root) {
-        vector<string> ans ;
-        helper(root,ans,"");
+        vector<string> ans;
+        string s = "";
+        helper(root, ans, s);
         return ans;
     }
 };
