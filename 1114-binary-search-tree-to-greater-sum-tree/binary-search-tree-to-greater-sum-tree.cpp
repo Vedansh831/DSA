@@ -11,16 +11,17 @@
  */
 class Solution {
 public:
-    int sum = 0;
-    void inorder(TreeNode* root){
+    void inorder(TreeNode* root, int& sum){
         if(root==NULL) return;
-        inorder(root->right);
-        root->val += sum;
-        sum = root->val;
-        inorder(root->left);
+        inorder(root->right, sum);
+        sum += root->val;
+        root->val = sum;
+        inorder(root->left, sum);
+        return;
     }
     TreeNode* bstToGst(TreeNode* root) {
-        inorder(root);
+        int sum = 0;
+        inorder(root, sum);
         return root;
     }
 };
