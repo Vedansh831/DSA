@@ -12,6 +12,7 @@
 class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
+        // Morris Traversal
         vector<int> ans;
         TreeNode* curr = root;
         while(curr){
