@@ -1,24 +1,47 @@
 class Solution {
 public:
+    // Optimal Code
     vector<int> findSubstring(string s, vector<string>& words) {
-        unordered_map<string, int> m;
-        for(auto s : words) m[s]++;
-        int n = words[0].size();
-        int strs = s.size();
+        unordered_map<string, int> need;
+        for (auto &word : words) need[word]++;
+        int len = words[0].size();
+        int total = words.size();
         vector<int> ans;
-        int wSz = n * words.size(); // Window Size
-        for( int i=0 ; i<=strs - wSz ; i++ ){
-            unordered_map<string, int> check;
-            for(int j=i;j<i+wSz;){ // Putting all the strings in the new map
-                string st = "";
-                for(int k=0;k<n;k++){
-                    st += s[j++];
+        // Try every possible alignment
+        for (int offset = 0; offset < len; offset++) {
+            int left = offset;
+            int count = 0;
+            unordered_map<string, int> have;
+            for (int right = offset; right + len <= s.size(); right += len) {
+                string word = s.substr(right, len);
+                // Word is not required
+                if (!need.count(word)) {
+                    have.clear();
+                    count = 0;
+                    left = right + len;
+                    continue;
                 }
-                check[st]++;
+                have[word]++;
+                count++;
+                // Too many copies of this word
+                while (have[word] > need[word]) {
+                    string remove = s.substr(left, len);
+                    have[remove]--;
+                    left += len;
+                    count--;
+                }
+                // Exactly all words are present
+                if (count == total) {
+                    ans.push_back(left);
+                    // Move left forward for next possible window
+                    string remove = s.substr(left, len);
+                    have[remove]--;
+                    left += len;
+                    count--;
+                }
             }
-            if(m == check) ans.push_back(i);
-            check.clear();
         }
+        
         return ans;
     }
 };
