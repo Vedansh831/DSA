@@ -11,24 +11,18 @@
  */
 class Solution {
 public:
-    int count=0;
-    void avg(TreeNode* root, int& sum, int& n){
-        if(root==NULL) return;
-        sum += root->val;
-        n += 1;
-        avg(root->left, sum , n);
-        avg(root->right, sum , n);
-        return;
+    int count = 0;
+    pair<int,int> dfs(TreeNode* root) {
+        if(root == NULL) return {0, 0};
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+        int sum = root->val + left.first + right.first;
+        int n = 1 + left.second + right.second;
+        if(root->val == sum / n) count++;
+        return {sum, n};
     }
     int averageOfSubtree(TreeNode* root) {
-        if(root==NULL) return 0;
-        int sum=0, n=0;
-        avg(root, sum, n);
-        int a = sum/n;
-
-        if(root->val == a) count++;
-        averageOfSubtree(root->left);
-        averageOfSubtree(root->right);
+        dfs(root);
         return count;
     }
 };
