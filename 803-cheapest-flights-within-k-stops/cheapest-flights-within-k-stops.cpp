@@ -1,6 +1,7 @@
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        // This solution is based on weight sorting using priority queue , but we can also solve it using normal queue data structure 
         vector<pair<int, int>> graph[n];
         for (auto it : flights) {
             graph[it[0]].push_back({it[1], it[2]});
